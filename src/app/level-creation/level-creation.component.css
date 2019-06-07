@@ -1,0 +1,36 @@
+
+.editor-list {
+    position: fixed;
+    padding: 0;
+    margin: 0;
+
+    top: 120px;
+    left: 0;
+
+    width: 100%;
+    height: calc(100% - 120px);
+
+    display: table;
+    text-align: center;
+}
+
+ul {
+    display: table-cell;
+    vertical-align: middle;
+    list-style-type: none;
+    text-align: center;
+}
+
+li {
+    font-family: "Helvetica";
+    font-size: 40px;
+    line-height: 60px;
+}
+
+a:visited {
+    color: black;
+}
+
+canvas {
+    vertical-align: middle;
+}
