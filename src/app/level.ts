@@ -5,21 +5,20 @@ export class Level {
 
     constructor(private _nodes: Node[][] = [], private _current: Position = null, private _goal: Position = null)
     { 
-        for(let i=0;i<5;i++) {
+        for(let i=0;i<7;i++) {
             _nodes.push([]);
-            for(let j=0;j<7;j++) {
+            for(let j=0;j<5;j++) {
                 _nodes[i].push(null);
             }
         }
 
     }
     
-    public getNode(row: number, column: number) : Node {
+    public getNode(column: number, row: number) : Node {
         return this._nodes[row][column];
     }
 
-    public setNode(row: number, column: number, node: Node) : void {
-        console.log(JSON.stringify(this._nodes));
+    public setNode(column: number, row: number, node: Node) : void {
         this._nodes[row][column] = node;
     }
 

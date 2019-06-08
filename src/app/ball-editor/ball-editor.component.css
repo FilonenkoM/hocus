@@ -1,0 +1,11 @@
+app-cube-indicator {
+    padding: 0;
+    margin:0;
+    display: block;
+    position: fixed;
+    top: 0;
+    left:0;
+    height:110px;
+    width: 100%;
+    z-index: 1;
+}

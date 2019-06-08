@@ -21,5 +21,7 @@ export class TopComponent implements OnInit {
     this._location.back();
   }
 
-
+  public next() {
+    this._topService.next();
+  }
 }

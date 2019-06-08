@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { Subject } from 'rxjs/internal/Subject';
 
 @Injectable({
@@ -6,6 +6,9 @@ import { Subject } from 'rxjs/internal/Subject';
 })
 export class TopService {
   levelEditionInProcess: boolean = false;
+
+  public nextClicked: EventEmitter<boolean> = new EventEmitter();
+
   public levelEditionInrocessChange: Subject<boolean> = new Subject<boolean>();
 
   constructor() { 
@@ -20,5 +23,9 @@ export class TopService {
 
   public endLevelEditionProcess() {
     this.levelEditionInrocessChange.next(false);
+  }
+
+  public next() {
+    this.nextClicked.next(true);
   }
 }

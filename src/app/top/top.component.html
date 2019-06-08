@@ -1,5 +1,5 @@
 <!--The content below is only a placeholder and can be replaced.-->
 
 <button (click)="back($event)" class="back-button">⬅</button>
-<button [hidden]="tickHidden" class="tick-button">✓</button>
+<button (click)="next()" [hidden]="tickHidden" class="tick-button">✓</button>
 <ngb-progressbar [hidden]="tickHidden" type="info" [value]="50"></ngb-progressbar>
