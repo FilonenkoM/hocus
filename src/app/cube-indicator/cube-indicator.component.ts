@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild, ElementRef, HostBinding } from '@angular/
 import { BoardService } from '../services/board.service';
 import { Subscription } from 'rxjs';
 import { Position } from '../position';
+import { TopService } from '../services/top.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cube-indicator',
@@ -18,9 +20,11 @@ export class CubeIndicatorComponent implements OnInit {
 
   public directionsAvailable: boolean[] = [];
 
-  constructor(private _boardService: BoardService) { }
+  constructor(private _topService: TopService, private _boardService: BoardService, private _router: Router) { }
 
   ngOnInit() {
+    this._topService.levelEditionInrocessChange.next(true);
+
     this.subscriptions.push(this._boardService.notifyClicked.subscribe(value => {
       if(! this._boardService.nodeExists(value[0], value[1])) {
         this.isHidden = true;
@@ -36,6 +40,11 @@ export class CubeIndicatorComponent implements OnInit {
       this.isHidden = true;
     }))
 
+    this._topService.nextClicked.subscribe(value => {
+      if(this._boardService.level.current) {
+        this._router.navigateByUrl("/endpoint");
+      }
+    })
   }
 
   ngAfterViewInit() {
