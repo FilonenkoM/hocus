@@ -10,10 +10,13 @@ export class BoardService {
   public selected: EventEmitter<[number, number]> = new EventEmitter();
   public needsDisplay: EventEmitter<boolean> = new EventEmitter();
   public directionSwitcher: EventEmitter<number> = new EventEmitter();
+  public cubeMover: EventEmitter<number> = new EventEmitter();
+
   public levelLoader: EventEmitter<Level> = new EventEmitter();
   public notifyClickedOutOfBoard: EventEmitter<boolean> = new EventEmitter();;
   
   public drawBordersOnlyInExisting = false;
+  public playMode = false;
   public level = new Level();
   public currentDirections = [false, false, false, false, false, false];
 
@@ -60,5 +63,9 @@ export class BoardService {
 
   public clickedOut() {
     this.notifyClickedOutOfBoard.next(true);
+  }
+
+  public moveCube(direction: number) {
+    this.cubeMover.next(direction);
   }
 }

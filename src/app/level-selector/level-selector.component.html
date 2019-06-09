@@ -1,3 +1,10 @@
-<p>
-  level-selector works!
-</p>
+
+<div class="editor-list">
+  <ul >
+    <li *ngFor="let level of levels; index as i">
+       <a [routerLink]="['/level', i]">
+          Level {{level._name}}
+       </a>
+    </li>
+  </ul>
+</div>

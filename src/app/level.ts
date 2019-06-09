@@ -92,6 +92,7 @@ export class Level {
         this._current = new Position(target.row, target.column, Level.oppositeDirection(direction));
         return this._current.row == this._goal.row && this._current.column == this._goal.column && this._current.direction == this._goal.direction;
     }
+
 }
 
 class NodePosition {

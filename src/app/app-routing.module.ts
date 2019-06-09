@@ -8,6 +8,7 @@ import { EndpointEditorComponent } from './endpoint-editor/endpoint-editor.compo
 import { NameComponent } from './name/name.component';
 import { VerifyInputComponent } from './verify-input/verify-input.component';
 import { LevelSelectorComponent } from './level-selector/level-selector.component';
+import { LevelComponent } from './level/level.component';
 
 const routes: Routes = [
   { path: '', redirectTo: "/menu", pathMatch: "full" },
@@ -18,7 +19,8 @@ const routes: Routes = [
   { path: "endpoint", component: EndpointEditorComponent },
   { path: "name", component: NameComponent },
   { path: "verify", component: VerifyInputComponent },
-  { path: "play", component: LevelSelectorComponent}
+  { path: "play", component: LevelSelectorComponent},
+  { path: "level/:id", component: LevelComponent }
 ];
 
 @NgModule({

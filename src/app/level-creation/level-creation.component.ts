@@ -102,7 +102,7 @@ export class LevelCreationComponent implements OnInit {
   }
 }
 
-enum KeyCodes {
+export enum KeyCodes {
   Q = 81, 
   W = 87,
   E = 69,
@@ -111,7 +111,7 @@ enum KeyCodes {
   D = 68,
 }
 
-enum KeyDirections {
+export enum KeyDirections {
   TOP = KeyCodes.W,
   RIGHT_TOP = KeyCodes.E,
   RIGHT_BOTTOM = KeyCodes.D,

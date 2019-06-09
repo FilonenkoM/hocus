@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { BoardService } from '../services/board.service';
 import { Level } from '../level';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-board',
@@ -10,6 +11,8 @@ import { Level } from '../level';
 export class BoardComponent implements OnInit {
 
   @ViewChild('levelCanvas') private levelCanvas: ElementRef;
+
+  private subscriptions: Subscription[] = [];
   private cx: CanvasRenderingContext2D;
   private hexSize = 50;
   private width = this.hexSize * 2 * 4;
@@ -27,23 +30,28 @@ export class BoardComponent implements OnInit {
   }
 
   ngOnInit() {
-
-    this._boardService.selected.subscribe(value => {
+    this.subscriptions.push(this._boardService.selected.subscribe(value => {
       this.currentIndex = this.indexOfPosition(value[0], value[1]);
-    });
-    this._boardService.needsDisplay.subscribe(value => {
+    }));
+    this.subscriptions.push(this._boardService.needsDisplay.subscribe(value => {
       if(value) {
         this.setNeedsDisplay();
       }
-    });
-    this._boardService.directionSwitcher.subscribe(value => {
+    }));
+    this.subscriptions.push(this._boardService.directionSwitcher.subscribe(value => {
       this._boardService.currentDirections[value] = ! this._boardService.currentDirections[value];
-    });
-    this._boardService.levelLoader.subscribe(value => {
+    }));``
+    this.subscriptions.push(this._boardService.levelLoader.subscribe(value => {
       this.loadLevel(value);
-    })
+    }))
+    this.subscriptions.push(this._boardService.cubeMover.subscribe(value => {
+      
+    }))
   }
 
+  ngOnDestroy() {
+    for(let subscription of this.subscriptions) subscription.unsubscribe();
+  }
   ngAfterViewInit() {
 
 
@@ -75,6 +83,7 @@ export class BoardComponent implements OnInit {
   }
 
   setNeedsDisplay() {
+
     this.redraw();
   }
 
@@ -83,8 +92,11 @@ export class BoardComponent implements OnInit {
     this.cx.clearRect(0, 0, this.levelCanvas.nativeElement.width, this.levelCanvas.nativeElement.height);
     this.drawBoard(this.cx, this.hexSize, this.gridCoof);
   
+    console.log(JSON.stringify(this._boardService.level));
     for(let i=0;i<this.connections.length;i++) {
+
       if(this.connections[i].some(value => value == true)) { 
+
         this.drawNode(i, this.connections[i]);
       }
     }
@@ -102,25 +114,25 @@ export class BoardComponent implements OnInit {
     for (let i = 0; i < 7; i++) {
       if (i != 6 && i != 5) {
         this.positions.push([0, i]);
-        let stroke = (! this._boardService.drawBordersOnlyInExisting || this._boardService.nodeExists(0, i)) 
+        let stroke = ! this._boardService.playMode && (! this._boardService.drawBordersOnlyInExisting || this._boardService.nodeExists(0, i)) 
           this.drawHexagon (canvasContext, basicHOffset + this.hexSize, basicYOffset + this.hexSize * 2.5 + 10 + (i * hexSize * gridCoof), stroke, hexSize); 
       }
       if (i != 6) {
         this.positions.push([1, i]);
-        let stroke = (! this._boardService.drawBordersOnlyInExisting || this._boardService.nodeExists(1, i)) 
+        let stroke = ! this._boardService.playMode && (! this._boardService.drawBordersOnlyInExisting || this._boardService.nodeExists(1, i)) 
           this.drawHexagon (canvasContext, basicHOffset + this.hexSize * 2.5, basicYOffset + this.hexSize * 1.5 + 17 + (i * hexSize * gridCoof), stroke, hexSize); 
       }
       this.positions.push([2, i]);
-      let stroke = (! this._boardService.drawBordersOnlyInExisting || this._boardService.nodeExists(2, i)) 
+      let stroke = ! this._boardService.playMode && (! this._boardService.drawBordersOnlyInExisting || this._boardService.nodeExists(2, i)) 
       this.drawHexagon (canvasContext, basicHOffset + this.hexSize * 4, basicYOffset + this.hexSize - 1 + (i * hexSize * gridCoof), stroke, hexSize);
       if (i != 6) {
         this.positions.push([3, i]);
-        let stroke = (! this._boardService.drawBordersOnlyInExisting || this._boardService.nodeExists(3, i)) 
+        let stroke = ! this._boardService.playMode && (! this._boardService.drawBordersOnlyInExisting || this._boardService.nodeExists(3, i)) 
         this.drawHexagon (canvasContext, basicHOffset + this.hexSize * 5.5, basicYOffset + this.hexSize * 1.5 + 17 + (i * hexSize * gridCoof), stroke, hexSize); 
       }
       if (i != 6 && i != 5) {
         this.positions.push([4, i]);
-        let stroke = (! this._boardService.drawBordersOnlyInExisting || this._boardService.nodeExists(4, i)) 
+        let stroke = ! this._boardService.playMode && (! this._boardService.drawBordersOnlyInExisting || this._boardService.nodeExists(4, i)) 
         this.drawHexagon (canvasContext, basicHOffset + this.hexSize * 7, basicYOffset + this.hexSize * 2.5 + 10 + (i * hexSize * gridCoof), stroke, hexSize); 
       }
     }
@@ -178,6 +190,7 @@ export class BoardComponent implements OnInit {
   }
 
   private drawNode(index: number, connections: boolean[]) {
+
     let dark = "rgb(72, 69, 71)";
     let mid = "rgb(99, 106, 100";
     let light = "rgb(152, 150, 152)";
