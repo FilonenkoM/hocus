@@ -8,6 +8,7 @@ export class TopService {
   levelEditionInProcess: boolean = false;
 
   public nextClicked: EventEmitter<boolean> = new EventEmitter();
+  public notifyPbChanged: EventEmitter<number> = new EventEmitter();
 
   public levelEditionInrocessChange: Subject<boolean> = new Subject<boolean>();
 
@@ -27,5 +28,9 @@ export class TopService {
 
   public next() {
     this.nextClicked.next(true);
+  }
+
+  public setPbValue(value: number) {
+    this.notifyPbChanged.next(value);
   }
 }

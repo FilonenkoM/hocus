@@ -9,9 +9,18 @@ import { TopService } from '../services/top.service';
 })
 export class TopComponent implements OnInit {
   tickHidden: boolean = true;
+  pbValue = 50;
+
   ngOnInit() {
 
   }
+
+  ngAfterViewInit() {
+    this._topService.notifyPbChanged.subscribe(value => {
+      this.pbValue = value;
+    })
+  }
+
   constructor(private _location: Location, private _topService: TopService) {  
     this._topService.levelEditionInrocessChange.subscribe((value) => {
       this.tickHidden = ! value;

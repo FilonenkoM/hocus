@@ -27,6 +27,7 @@ export class BoardComponent implements OnInit {
   }
 
   ngOnInit() {
+
     this._boardService.selected.subscribe(value => {
       this.currentIndex = this.indexOfPosition(value[0], value[1]);
     });
@@ -44,6 +45,8 @@ export class BoardComponent implements OnInit {
   }
 
   ngAfterViewInit() {
+
+
     const canvasEl: HTMLCanvasElement = this.levelCanvas.nativeElement;
     this.cx = canvasEl.getContext('2d');
     canvasEl.height = window.innerHeight;
@@ -76,6 +79,7 @@ export class BoardComponent implements OnInit {
   }
 
   private redraw() {
+
     this.cx.clearRect(0, 0, this.levelCanvas.nativeElement.width, this.levelCanvas.nativeElement.height);
     this.drawBoard(this.cx, this.hexSize, this.gridCoof);
   
@@ -208,7 +212,9 @@ export class BoardComponent implements OnInit {
         if(this._boardService.level.current.direction == 1)
           this.drawCube(a1, b1);
         if(this._boardService.level.current.direction == 3)
+        {
           this.drawCube(a5, b5);
+        }
         if(this._boardService.level.current.direction == 5)
           this.drawCube(a3, b3);
     }
@@ -307,6 +313,28 @@ export class BoardComponent implements OnInit {
         if(this._boardService.level.current.direction == 4)
           this.drawCube(a4, b4);
     }
+    
+    dark = "rgb(139, 5, 1)";
+    mid = "rgb(190, 0, 3)";
+    light = "rgb(245, 5, 1)";
+
+
+    if(this._boardService.level.goal 
+      && this._boardService.level.goal.column == this.positions[index][0] 
+      && this._boardService.level.goal.row == this.positions[index][1]) {
+        if(this._boardService.level.goal.direction == 0) {
+          this.cx.fillStyle = light;
+          this.drawQuadriateral(x ,y, a1, b1, a2, b2, a3, b3);
+        }
+        if(this._boardService.level.goal.direction == 4) {
+          this.cx.fillStyle = dark;
+          this.drawQuadriateral(x, y, a3, b3, a4, b4, a5, b5);
+        }
+        if(this._boardService.level.goal.direction == 2) {
+          this.cx.fillStyle = mid;
+          this.drawQuadriateral(x, y, a5, b5, a6, b6, a1, b1);
+        }
+      }
   }
 
   private drawQuadriateral(a1, b1, a2, b2, a3, b3, a4, b4) {

@@ -3,7 +3,7 @@ import { Node } from './node';
 
 export class Level {
 
-    constructor(private _nodes: Node[][] = [], private _current: Position = null, private _goal: Position = null)
+    constructor(public _name: string = null, private _nodes: Node[][] = [], private _current: Position = null, private _goal: Position = null)
     { 
         for(let i=0;i<7;i++) {
             _nodes.push([]);

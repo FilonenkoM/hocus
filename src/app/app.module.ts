@@ -12,6 +12,10 @@ import { BoardComponent } from './board/board.component';
 import { BallEditorComponent } from './ball-editor/ball-editor.component';
 import { CubeIndicatorComponent } from './cube-indicator/cube-indicator.component';
 import { EndpointEditorComponent } from './endpoint-editor/endpoint-editor.component';
+import { NameComponent } from './name/name.component';
+import { VerifyInputComponent } from './verify-input/verify-input.component';
+import { LevelComponent } from './level/level.component';
+import { LevelSelectorComponent } from './level-selector/level-selector.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +28,11 @@ import { EndpointEditorComponent } from './endpoint-editor/endpoint-editor.compo
     BoardComponent,
     BallEditorComponent,
     CubeIndicatorComponent,
-    EndpointEditorComponent
+    EndpointEditorComponent,
+    NameComponent,
+    VerifyInputComponent,
+    LevelComponent,
+    LevelSelectorComponent
   ],
   imports: [
     BrowserModule,

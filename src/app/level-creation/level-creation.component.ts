@@ -47,6 +47,7 @@ export class LevelCreationComponent implements OnInit {
   subscriptions: Subscription[] = [];
 
   ngOnInit() {
+    this._topService.setPbValue(20);
     this._boardService.level.current = null;
     this._boardService.drawBordersOnlyInExisting = false;
     this.subscriptions.push(this._topService.nextClicked.subscribe(value => {

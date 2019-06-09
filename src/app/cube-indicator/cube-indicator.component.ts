@@ -48,13 +48,13 @@ export class CubeIndicatorComponent implements OnInit {
   }
 
   ngAfterViewInit() {
+    this._topService.setPbValue(40);
     this.canvas.nativeElement.width = window.innerWidth;
     this.cx = this.canvas.nativeElement.getContext("2d");
     this.redraw();
   }
 
   ngOnDestroy() {
-    for(let subscription of this.subscriptions) subscription.unsubscribe();
   }
 
   setCurrent(event) {
