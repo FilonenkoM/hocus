@@ -16,7 +16,11 @@ export class VerifyInputComponent implements OnInit {
     this._topService.levelEditionInrocessChange.next(true);
     this._topService.setPbValue(100);
     this.textarea = JSON.stringify(this._boardService.level);
+
   }
 
+  ngOnDestroy() {
+    this._topService.levelEditionInrocessChange.next(false);
+  }
 
 }

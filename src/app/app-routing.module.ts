@@ -9,6 +9,7 @@ import { NameComponent } from './name/name.component';
 import { VerifyInputComponent } from './verify-input/verify-input.component';
 import { LevelSelectorComponent } from './level-selector/level-selector.component';
 import { LevelComponent } from './level/level.component';
+import { TutorialComponent } from './tutorial/tutorial.component';
 
 const routes: Routes = [
   { path: '', redirectTo: "/menu", pathMatch: "full" },
@@ -20,7 +21,9 @@ const routes: Routes = [
   { path: "name", component: NameComponent },
   { path: "verify", component: VerifyInputComponent },
   { path: "play", component: LevelSelectorComponent},
-  { path: "level/:id", component: LevelComponent }
+  { path: "level/:id", component: LevelComponent },
+  { path: 'tutorial', component: TutorialComponent }
+
 ];
 
 @NgModule({

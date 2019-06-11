@@ -14,6 +14,8 @@ import { KeyDirections } from '../level-creation/level-creation.component';
 })
 export class LevelComponent implements OnInit {
 
+  private levelIndex: number;
+
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
     switch(event.keyCode) {
@@ -35,6 +37,14 @@ export class LevelComponent implements OnInit {
       case KeyDirections.LEFT_TOP:
         this._boardService.moveCube(5);
         break;
+    }
+    this._boardService.setNeedsDisplay();
+
+    if(this._boardService.level.finished()) {
+      if(this.levelIndex < this._levelService.levels.length - 1) {
+        this.levelIndex ++;
+        this.router.navigateByUrl("/level/" + this.levelIndex);
+      }
     }
   }
 
@@ -60,6 +70,7 @@ export class LevelComponent implements OnInit {
   ngAfterViewInit() {
     this.subscriptions.push(this.route.params.subscribe(value => {
       let index = +value["id"];
+      this.levelIndex = index;
       this._boardService.level = this._levelService.levels[index];
       this._boardService.loadLevel(this._boardService.level);
       this._boardService.setNeedsDisplay();

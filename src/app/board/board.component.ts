@@ -45,7 +45,7 @@ export class BoardComponent implements OnInit {
       this.loadLevel(value);
     }))
     this.subscriptions.push(this._boardService.cubeMover.subscribe(value => {
-      
+      this._boardService.level.moveTo(value);
     }))
   }
 
@@ -172,6 +172,8 @@ export class BoardComponent implements OnInit {
   } 
 
   public loadLevel(level: Level) {
+    for(let i=0;i<this.connections.length;i++) this.connections[i] = [false, false, false, false, false, false]
+
     for(let i=0;i<7;i++) {
       for(let j=0;j<5;j++) {
         if(! level.nodes[i][j]) {
@@ -222,15 +224,20 @@ export class BoardComponent implements OnInit {
     if(this._boardService.level.current 
       && this.positions[index][0] == this._boardService.level.current.column
       && this.positions[index][1] == this._boardService.level.current.row) {
+
         if(this._boardService.level.current.direction == 1)
           this.drawCube(a1, b1);
         if(this._boardService.level.current.direction == 3)
-        {
           this.drawCube(a5, b5);
-        }
         if(this._boardService.level.current.direction == 5)
           this.drawCube(a3, b3);
-    }
+        if(this._boardService.level.current.direction == 17)
+          this.drawCube(a6, b6);
+        if(this._boardService.level.current.direction == 18)
+          this.drawCube(a4, b4);
+        if(this._boardService.level.current.direction == 19)
+          this.drawCube(a2, b2);
+      }
 
     this.cx.fillStyle = light;
     this.drawQuadriateral(x, y, a1, b1, a2, b2, a3, b3);
@@ -280,6 +287,8 @@ export class BoardComponent implements OnInit {
       this.cx.fillStyle = dark;
       this.drawQuadriateral(a5, b5, a4, b4, a4, y + height, a5, y + height);
     }
+
+
     // right top
     if(connections[1]) {
       this.cx.fillStyle = mid;
@@ -294,6 +303,24 @@ export class BoardComponent implements OnInit {
       this.cx.fillStyle = light;
       this.drawQuadriateral(x ,y, a1, b1, nx[1], ny[0], kx[1], ky[0]);
     }
+
+    if(this._boardService.level.current 
+      && this.positions[index][0] == this._boardService.level.current.column
+      && this.positions[index][1] == this._boardService.level.current.row) {
+
+        if(this._boardService.level.current.direction == 6)
+          this.drawCube(a1, b1 - m) ;
+        if(this._boardService.level.current.direction == 11)
+          this.drawCube(a4, y - 1.5*m) ;
+        if(this._boardService.level.current.direction == 9)
+          this.drawCube(a4, b4 + m) ;
+        if(this._boardService.level.current.direction == 7)
+          this.drawCube(2*a1 - x, y) ;
+        if(this._boardService.level.current.direction == 10)
+          this.drawCube(x - (x - a4) * 2, y) ;
+
+      }
+
     // top
     if(connections[0]) {
       this.cx.fillStyle = mid;
@@ -301,19 +328,29 @@ export class BoardComponent implements OnInit {
       this.cx.fillStyle = dark;
       this.drawQuadriateral(x, y, a3, b3, a3, y - height, a2, y - height);
     }
-    // right bottom
-    if(connections[2]) {
-      this.cx.fillStyle = light;
-      this.drawQuadriateral(x ,y, a1, b1, mx[0], my[1], kx[0], ky[1]);
-      this.cx.fillStyle = dark;
-      this.drawQuadriateral(x ,y, a4, b4, nx[0], ny[1], kx[0], ky[1]);
-    }
+
     // // left bottom
     if(connections[4]) {
       this.cx.fillStyle = light;
       this.drawQuadriateral(x ,y, a3, b3, mx[1], my[1], kx[1], ky[1]);
       this.cx.fillStyle = mid;
       this.drawQuadriateral(x ,y, a5, b5, nx[1], ny[1], kx[1], ky[1]);
+    }
+
+
+  if(this._boardService.level.current 
+    && this.positions[index][0] == this._boardService.level.current.column
+    && this.positions[index][1] == this._boardService.level.current.row) {
+      if(this._boardService.level.current.direction == 8)
+      this.drawCube(a1, y + 1.5*m) ;
+    }
+
+    // right bottom
+    if(connections[2]) {
+      this.cx.fillStyle = light;
+      this.drawQuadriateral(x ,y, a1, b1, mx[0], my[1], kx[0], ky[1]);
+      this.cx.fillStyle = dark;
+      this.drawQuadriateral(x ,y, a5, b5, nx[0], ny[1], kx[0], ky[1]);
     }
 
     if(this._boardService.level.current 
@@ -325,12 +362,17 @@ export class BoardComponent implements OnInit {
           this.drawCube(a6, b6);
         if(this._boardService.level.current.direction == 4)
           this.drawCube(a4, b4);
-    }
+        if(this._boardService.level.current.direction == 13)
+          this.drawCube(a3, b3);
+        if(this._boardService.level.current.direction == 15)
+          this.drawCube(a5, b5);
+        if(this._boardService.level.current.direction == 16)
+          this.drawCube(a1, b1);
+      }
     
     dark = "rgb(139, 5, 1)";
     mid = "rgb(190, 0, 3)";
     light = "rgb(245, 5, 1)";
-
 
     if(this._boardService.level.goal 
       && this._boardService.level.goal.column == this.positions[index][0] 
@@ -348,6 +390,8 @@ export class BoardComponent implements OnInit {
           this.drawQuadriateral(x, y, a5, b5, a6, b6, a1, b1);
         }
       }
+
+
   }
 
   private drawQuadriateral(a1, b1, a2, b2, a3, b3, a4, b4) {

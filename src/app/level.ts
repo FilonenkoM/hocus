@@ -13,6 +13,38 @@ export class Level {
         }
 
     }
+
+    public foundIntermediate(first: number, second: number) {
+        if(first == 0 && second == 1 || first == 1 && second == 0) return 6;
+        if(first == 0 && second == 4 || first == 4 && second == 4) return 13;
+        if(first == 2 && second == 4 || first == 4 && second == 2) return 15;
+        if(first == 2 && second == 0 || first == 0 && second == 2) return 16;
+        if(first == 0 && second == 5 || first == 5 && second == 0) return 11;
+        if(first == 1 && second == 3 || first == 3 && second == 1) return 17;
+        if(first == 3 && second == 4 || first == 4 && second == 3) return 9;
+        if(first == 1 && second == 2 || first == 2 && second == 1) return 7;
+        if(first == 3 && second == 5 || first == 5 && second == 3) return 18;
+        if(first == 1 && second == 5 || first == 5 && second == 1) return 19;
+        if(first == 4 && second == 5 || first == 5 && second == 4) return 10;
+        if(first == 2 && second == 3 || first == 3 && second == 2) return 8;
+
+    }
+
+    public getClosest(direction: number) {
+        if(direction == 6) return [0, 1];
+        if(direction == 13) return [0, 4];
+        if(direction == 15) return [2, 4];
+        if(direction == 16) return [0, 2];
+        if(direction == 11) return [0, 5];
+        if(direction == 17) return [1, 3];
+        if(direction == 9) return [3, 4];
+        if(direction == 7) return [1, 2];
+        if(direction == 18) return [3, 5];
+        if(direction == 19) return [1, 5];
+        if(direction == 10) return [4, 5];
+        if(direction == 8) return [2, 3];
+
+    }
     
     public getNode(column: number, row: number) : Node {
         return this._nodes[row][column];
@@ -54,45 +86,89 @@ export class Level {
         }
     }
 
-    private neighbors(np: NodePosition): NodePosition[] {
-        let candidates: NodePosition[] = [
-            new NodePosition(this.current.row - 2, this.current.column, this.getNode(this.current.row - 2, this.current.column)),
-            new NodePosition(this.current.row - 1, this.current.column + 1, this.getNode(this.current.row - 1, this.current.column + 1)),
-            new NodePosition(this.current.row + 1, this.current.column + 1, this.getNode(this.current.row + 1, this.current.column + 1)),
-            new NodePosition(this.current.row + 2, this.current.column, this.getNode(this.current.row + 2, this.current.column)),
-            new NodePosition(this.current.row + 1, this.current.column - 1, this.getNode(this.current.row + 1, this.current.column - 1)),
-            new NodePosition(this.current.row - 1, this.current.column - 1, this.getNode(this.current.row - 1, this.current.column - 1)),
-        ];
-        return candidates.map((np: NodePosition) => (np.row >= 0 
-            && np.column >= 0 
-            && np.row < 13 
-            && np.column < 5
-            && ((np.row == 0 && np.column == 0) 
-                || (np.row == 0 && np.column == 4) 
-                || (np.row == 12 && np.column == 0) 
-                || (np.row == 12 && np.column == 4))) ? null : np);
+    public neighbors(): [number, number][] {
+        let n = [];
+        for(let i=0;i<6;i++) {
+            n.push([undefined, undefined]);
+        }
+        n[0] = [this.current.column, this.current.row - 1];
+        n[3] = [this.current.column, this.current.row + 1];
+
+        switch(this.current.column) {
+            case 0:
+                n[1] = [this.current.column + 1, this.current.row];
+                n[2] = [this.current.column + 1, this.current.row + 1];
+                break;
+            case 1:
+                 n[1] = [this.current.column + 1, this.current.row];
+                 n[2] = [this.current.column + 1, this.current.row + 1];
+                 n[4] = [this.current.column - 1, this.current.row];
+                 n[5] = [this.current.column - 1, this.current.row - 1];
+
+                 break;
+            case 2:
+                n[1] = [this.current.column + 1, this.current.row -1];
+                n[2] = [this.current.column + 1, this.current.row];
+                n[4] = [this.current.column - 1, this.current.row];
+                n[5] = [this.current.column - 1, this.current.row - 1];
+
+                break;
+            case 3:
+                n[1] = [this.current.column + 1, this.current.row - 1];
+                n[2] = [this.current.column + 1, this.current.row];
+                n[4] = [this.current.column - 1, this.current.row + 1];
+                n[5] = [this.current.column - 1, this.current.row];
+
+                break;
+            case 4:
+                n[4] = [this.current.column - 1, this.current.row + 1];
+                n[5] = [this.current.column - 1, this.current.row];
+
+        }
+        return n;
+
     }
 
-    public getAvailableDirections(): boolean[] {
-        let directions =  this.neighbors(new NodePosition(this.current.row, this.current.column, this.getNode(this.current.row, this.current.column))).map(
-            (np: NodePosition) => np == null
-        );
-        directions[Level.oppositeDirection(this.current.direction)] = false;
-        return directions;
+    moveTo(direction: number) {
+        let neighbors = this.neighbors();
+
+
+        if(this.current.direction < 6) {
+            if(this.getNode(this.current.column, this.current.row).positions[direction] 
+                && ! (this.current.direction == Level.oppositeDirection(direction)) 
+                && this.getNode(neighbors[direction][0], neighbors[direction][1])
+                && this.getNode(neighbors[direction][0], neighbors[direction][1]).positions.some(value => value))
+            {  
+                if(! this.getNode(neighbors[direction][0], neighbors[direction][1]).positions[this.current.direction]) {
+                    this.current.column = neighbors[direction][0];
+                    this.current.row = neighbors[direction][1];
+                }
+                else {
+                    let intermediate = this.foundIntermediate(this.current.direction, Level.oppositeDirection(direction));
+                    this.current.column = neighbors[direction][0];
+                    this.current.row = neighbors[direction][1];
+                    this.current.direction = intermediate;
+                }
+            }
+        }
+        else {
+            let closest = this.getClosest(this.current.direction);
+
+            if(direction == closest[0]) {
+                this.current.direction = closest[1];
+                this.moveTo(closest[0]);
+            }
+            if(direction == closest[1]){
+                this.current.direction = closest[0];
+                this.moveTo(closest[1]);
+            }
+        }
+
     }
 
-    public canMoveIn(direction: number) {
-        return this.getAvailableDirections()[direction];
+    public finished() {
+        return this.current.column == this.goal.column && this.current.row == this.goal.row && this.current.direction == this.goal.direction;
     }
-
-    public moveIn(direction: number): boolean {
-        if(! this.canMoveIn(direction)) throw -1;
-        let neighbors = this.neighbors(new NodePosition(this.current.row, this.current.column, this.getNode(this.current.row, this.current.column)));
-        let target = neighbors[direction];
-        this._current = new Position(target.row, target.column, Level.oppositeDirection(direction));
-        return this._current.row == this._goal.row && this._current.column == this._goal.column && this._current.direction == this._goal.direction;
-    }
-
 }
 
 class NodePosition {

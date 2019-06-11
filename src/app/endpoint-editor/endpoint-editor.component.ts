@@ -31,6 +31,9 @@ export class EndpointEditorComponent implements OnInit {
       }
       else {
         this.availableDirections = this._boardService.level.getNode(value[0], value[1]).positions;
+        if(value[0] == this._boardService.level.current.column && value[1] == this._boardService.level.current.row) {
+          this.availableDirections[this._boardService.level.current.direction] = true;
+        }
         this.isHidden = false;
         this.currentPosition = [value[0], value[1]]; 
         this.redraw();
@@ -82,7 +85,7 @@ export class EndpointEditorComponent implements OnInit {
     let xOffset = (window.innerWidth - hexDistance * 3 - this.hexSize * 3) / 2 + this.hexSize;
     let yOffset =  75;
     for(let i=0;i<3;i++) {
-      if(! this.availableDirections[i * 2]) {
+      if(! this.availableDirections[i * 2] ) {
         this.drawHexagon(this.cx, xOffset + i * (this.hexSize + hexDistance), yOffset, this.hexSize);
         this.drawNode(this.coordinateX[i], this.coordinateY[i], [false, false, false, false, false, false], i + 1);
       }

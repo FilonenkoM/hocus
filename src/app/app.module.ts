@@ -16,6 +16,7 @@ import { NameComponent } from './name/name.component';
 import { VerifyInputComponent } from './verify-input/verify-input.component';
 import { LevelComponent } from './level/level.component';
 import { LevelSelectorComponent } from './level-selector/level-selector.component';
+import { TutorialComponent } from './tutorial/tutorial.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { LevelSelectorComponent } from './level-selector/level-selector.componen
     NameComponent,
     VerifyInputComponent,
     LevelComponent,
-    LevelSelectorComponent
+    LevelSelectorComponent,
+    TutorialComponent
   ],
   imports: [
     BrowserModule,
